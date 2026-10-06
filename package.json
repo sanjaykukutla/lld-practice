@@ -15,5 +15,8 @@
   "dependencies": {
     "electron": "39.2.6",
     "koffi": "2.14.1"
+  },
+  "devDependencies": {
+    "playwright": "^1.48.0"
   }
 }
