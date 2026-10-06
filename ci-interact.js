@@ -11,22 +11,7 @@ const { _electron: electron } = require('playwright');
 
   const selector = 'button, [role="button"], a, input[type="button"], input[type="submit"]';
   const clicked = await window.$$eval(selector, (els) => {
-    const isVisible = (el) => {
-      const rect = el.getBoundingClientRect();
-      const style = window.getComputedStyle(el);
-      return (
-        rect.width > 0 &&
-        rect.height > 0 &&
-        style.visibility !== 'hidden' &&
-        style.display !== 'none' &&
-        el.offsetParent !== null
-      );
-    };
-
-    const visible = els.filter(isVisible);
-    const withText = visible.filter((el) => (el.innerText || el.value || '').trim().length > 0);
-    const target = withText[0] || visible[0];
-
+    const target = els[0];
     if (!target) return null;
 
     const description = { tag: target.tagName, text: (target.innerText || target.value || '').trim() };
@@ -35,9 +20,9 @@ const { _electron: electron } = require('playwright');
   });
 
   if (clicked) {
-    console.log('Clicked visible element:', JSON.stringify(clicked));
+    console.log('Clicked element (regardless of visibility):', JSON.stringify(clicked));
   } else {
-    console.log('No visible clickable element found - no click performed');
+    console.log('No clickable element found at all - no click performed');
   }
 
   await window.waitForTimeout(1500);
